@@ -112,6 +112,7 @@ public class Calculadora extends javax.swing.JFrame {
             }
         });
 
+        jTextField3.setEditable(false);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -194,6 +195,9 @@ public class Calculadora extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.setEditable(false);
+
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -404,10 +408,9 @@ public class Calculadora extends javax.swing.JFrame {
         salida="";
         for(int i = 0;i<entrada.length();i++){
             char com=entrada.charAt(i);
-            if(entrada.charAt(i)==')'){
-                salida = salida + dato.pop();
-            }
-            if(entrada.charAt(i)>='*' && entrada.charAt(i)<='/'){
+            
+            
+            if(priori(com)>= 0){
                
                 if(dato.isEmpty()){
                      dato.push(entrada.charAt(i));
@@ -422,9 +425,20 @@ public class Calculadora extends javax.swing.JFrame {
                     }
                 }
             }
-            if(entrada.charAt(i)>='0'&& entrada.charAt(i)<='9'){
-               salida = salida + entrada.charAt(i);
+            if(priori(com)<0){
+                if(com =='('){
+                    dato.push(com);
+                }else if(com==')'){
+                    while(dato.peek()!='('){
+                        salida = salida + dato.pop();
+                    }
+                    dato.pop();
+                }else{
+                    salida = salida + entrada.charAt(i);
+                }
             }
+            
+           
         }while(!dato.isEmpty())
             salida=salida+dato.pop();
         
